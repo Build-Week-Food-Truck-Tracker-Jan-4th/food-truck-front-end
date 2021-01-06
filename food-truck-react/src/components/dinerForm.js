@@ -1,6 +1,12 @@
 import React from 'react'
 import {Route, Link, Switch} from 'react-router-dom'
 import {useHistory} from 'react-router-dom'
+import styled from 'styled-components';
+
+const Bform = styled.form `
+border: 2px solid tan;
+border-radius: 3px;
+`
 
 
 export default function DinerForm (props){
@@ -18,7 +24,7 @@ export default function DinerForm (props){
     };
 
     return (
-        <form className= 'Form container' onSubmit={onSubmit}>
+        <Bform className= 'Form container' onSubmit={onSubmit}>
             <div className="errors">
              <div>{errors.username}</div>
              <div>{errors.password}</div>
@@ -71,11 +77,9 @@ export default function DinerForm (props){
                </label>
 
                 <div className ='dinerLogIn'>
-               <button 
-                className ='LogInButton'
-               disabled={disabled}>Log In</button>
+               <button className ='LogInButton'disabled={disabled}>Log In</button>
                </div>
            </div>
-       </form>
+       </Bform>
     )
 }
