@@ -1,5 +1,6 @@
-import logo from './logo.svg';
+import React from "react";
 import './App.css';
+import DinerForm from "./components/dinerForm";
 import { Route } from "react-router-dom";
 
 import OperatorDashboard from "./components/OperatorDashboard";
@@ -11,7 +12,10 @@ import AddFoodTruck from "./components/AddFoodTruck";
 import dummyData from './components/dummyDataBrennan';
 
 function App() {
+    
+
   return (
+    <DinerForm/>
     <div className="App">
         <Route exact path="/" component={LandingPage}/>
         <Route path="/operator-dashboard" >
