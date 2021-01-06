@@ -1,30 +1,60 @@
 import React, { useState } from "react";
 
+const fakeUserLocation = {
+  latitude: 37.7976,
+  longitude: 145.9837,
+};
+
 const DinerDashboard = (props) => {
   const initialResults = props.trucks;
   const [results, setResults] = useState(initialResults);
   const [filteredResults, setFilteredResults] = useState(initialResults);
   const [noResults, setNoResults] = useState(false);
+  const [nearMeIsVisible, setNearMeIsVisible] = useState(false);
   const [ratingAvgAreVisible, setRatingAvgAreVisible] = useState(false);
   const [cuisineTypesAreVisible, setCuisineTypesAreVisible] = useState(false);
 
-  const toggleRatingAvgIsVisible = (event) => {
-    setRatingAvgAreVisible(!ratingAvgAreVisible);
+  const toggleNearMeIsVisible = () => {
+    setNearMeIsVisible(!nearMeIsVisible);
   }
 
-  const toggleCuisineTypeIsVisible = (event) => {
+  const toggleRatingAvgIsVisible = () => {
+    setRatingAvgAreVisible(!ratingAvgAreVisible);
+  };
+
+  const toggleCuisineTypeIsVisible = () => {
     setCuisineTypesAreVisible(!cuisineTypesAreVisible);
   };
 
-  const handleFilterByAvgRating = (minNumberOfStars, maxNumberOfStars) => {
-    console.log(filteredResults);
+  const handleFilterByNearMe = (radius) => {
     let newFilteredResults = filteredResults.filter((res) => {
-      return res.customerRatingAvg >= minNumberOfStars && res.customerRatingAvg <= maxNumberOfStars;
+      console.log(res);
+      let oneMile = 0.6;
+      let maxDistance = radius * oneMile;
+      return (
+        (res.currentLocation.location.latitude <=
+          fakeUserLocation.latitude + maxDistance &&
+          res.currentLocation.location.latitude >=
+            fakeUserLocation.latitude - maxDistance) &&
+        (res.currentLocation.location.longtitude <=
+          fakeUserLocation.longtitude + maxDistance &&
+          res.currentLocation.location.longtitude >=
+            fakeUserLocation.longtitude - maxDistance)
+      );
     });
     console.log(newFilteredResults);
     setFilteredResults(newFilteredResults);
-    console.log(filteredResults);
-  }
+  };
+
+  const handleFilterByAvgRating = (minNumberOfStars, maxNumberOfStars) => {
+    let newFilteredResults = filteredResults.filter((res) => {
+      return (
+        res.customerRatingAvg >= minNumberOfStars &&
+        res.customerRatingAvg <= maxNumberOfStars
+      );
+    });
+    setFilteredResults(newFilteredResults);
+  };
 
   const handleFilterByCuisineType = (event, cuisineType) => {
     let newFilteredResults = filteredResults.filter((res) => {
@@ -33,47 +63,68 @@ const DinerDashboard = (props) => {
     setFilteredResults(newFilteredResults);
   };
 
-  const handleApplyFilters = (event => {
+  const handleApplyFilters = (event) => {
     setResults(filteredResults);
-    if(filteredResults.length === 0) {
+    if (filteredResults.length === 0) {
       setNoResults(true);
     } else {
       setNoResults(false);
     }
-  })
+  };
 
   const handleUndoFilters = (event) => {
     setResults(initialResults);
     setFilteredResults(initialResults);
     setNoResults(false);
-  }
+  };
 
   return (
     <div>
       <h3>All Food Trucks</h3>
-      <button>Filter By Location</button>
-      <button onClick={toggleRatingAvgIsVisible}>Filter By Rating Average</button>
+      <button onClick={toggleNearMeIsVisible}>Filter By Location</button>
+      <button onClick={toggleRatingAvgIsVisible}>
+        Filter By Rating Average
+      </button>
       <button onClick={toggleCuisineTypeIsVisible}>
         Filter By Cuisine Type
       </button>
-      {ratingAvgAreVisible && <div>
-        <button onClick={(event) => handleFilterByAvgRating(1, 2)}>1-2 Stars</button>
-        <button onClick={(event) => handleFilterByAvgRating(3, 4)}>3-4 Stars</button>
-        <button onClick={(event) => handleFilterByAvgRating(5, 5)}>5 Stars</button>
+      {nearMeIsVisible && <div>
+        <button onClick={() => handleFilterByNearMe(1)}>
+          Filter By Near Me
+        </button>
         </div>}
+      {ratingAvgAreVisible && (
+        <div>
+          <button onClick={(event) => handleFilterByAvgRating(1, 2)}>
+            1-2 Stars
+          </button>
+          <button onClick={(event) => handleFilterByAvgRating(3, 4)}>
+            3-4 Stars
+          </button>
+          <button onClick={(event) => handleFilterByAvgRating(5, 5)}>
+            5 Stars
+          </button>
+        </div>
+      )}
       {cuisineTypesAreVisible && (
         <div>
           {props.trucks.map((truck, index) => {
             return (
               <div key={index}>
                 <button
-                  onClick={(event) => handleFilterByCuisineType(event, truck.cuisineType)}
+                  onClick={(event) =>
+                    handleFilterByCuisineType(event, truck.cuisineType)
+                  }
                 >
                   {truck.cuisineType}
                 </button>
               </div>
             );
           })}
+        </div>
+      )}
+      {(nearMeIsVisible || ratingAvgAreVisible || cuisineTypesAreVisible) && (
+        <div>
           <div>
             <button onClick={handleApplyFilters}>Apply Filters</button>
           </div>
@@ -83,7 +134,12 @@ const DinerDashboard = (props) => {
         </div>
       )}
       <div>
-      {noResults && <div>Oops, it looks like there aren't any trucks that match your filter...</div>}
+        {noResults && (
+          <div>
+            Oops, it looks like there aren't any trucks that match your
+            filter...
+          </div>
+        )}
       </div>
       {results.map((truck, index) => {
         return (
