@@ -7,6 +7,7 @@ import DinerDashboard from "./components/DinerDashboard";
 import LandingPage from "./components/LandingPage";
 import FoodTruck from "./components/FoodTruck";
 import EditFoodTruck from "./components/EditFoodTruck";
+import AddFoodTruck from "./components/AddFoodTruck";
 import dummyData from './components/dummyDataBrennan';
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
         </Route>
         <Route path="/edit-truck/:itemID">
           <EditFoodTruck trucks={dummyData} />
+        </Route>
+        <Route path="/add-truck">
+          <AddFoodTruck/>
         </Route>
     </div>
   );

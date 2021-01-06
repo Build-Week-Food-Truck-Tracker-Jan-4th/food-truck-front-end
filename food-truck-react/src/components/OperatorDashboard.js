@@ -7,7 +7,7 @@ export default class OperatorDashboard extends React.Component {
   };
 
   handleAddTruck = (event) => {
-    //Post Request
+    window.location.href = "/add-truck"
   };
 
   render() {
