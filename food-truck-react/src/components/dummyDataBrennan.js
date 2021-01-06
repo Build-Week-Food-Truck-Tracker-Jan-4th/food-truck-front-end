@@ -7,7 +7,7 @@ const dummyData = [
     customerRatingAvg: 2,
     currentLocation: {
       location: {
-        latitude: 37.81478,
+        latitude: 39.81478,
         longitude: 145.87294,
         distortion: 1.6,
       },

@@ -7,8 +7,10 @@ const fakeUserLocation = {
 
 const DinerDashboard = (props) => {
   const initialResults = props.trucks;
+
   const [results, setResults] = useState(initialResults);
   const [filteredResults, setFilteredResults] = useState(initialResults);
+
   const [noResults, setNoResults] = useState(false);
   const [nearMeIsVisible, setNearMeIsVisible] = useState(false);
   const [ratingAvgAreVisible, setRatingAvgAreVisible] = useState(false);
@@ -16,7 +18,7 @@ const DinerDashboard = (props) => {
 
   const toggleNearMeIsVisible = () => {
     setNearMeIsVisible(!nearMeIsVisible);
-  }
+  };
 
   const toggleRatingAvgIsVisible = () => {
     setRatingAvgAreVisible(!ratingAvgAreVisible);
@@ -28,18 +30,18 @@ const DinerDashboard = (props) => {
 
   const handleFilterByNearMe = (radius) => {
     let newFilteredResults = filteredResults.filter((res) => {
-      console.log(res);
+      console.log(res.currentLocation.location.longitude);
       let oneMile = 0.6;
       let maxDistance = radius * oneMile;
       return (
-        (res.currentLocation.location.latitude <=
+        res.currentLocation.location.latitude <=
           fakeUserLocation.latitude + maxDistance &&
-          res.currentLocation.location.latitude >=
-            fakeUserLocation.latitude - maxDistance) &&
-        (res.currentLocation.location.longtitude <=
-          fakeUserLocation.longtitude + maxDistance &&
-          res.currentLocation.location.longtitude >=
-            fakeUserLocation.longtitude - maxDistance)
+        res.currentLocation.location.latitude >=
+          fakeUserLocation.latitude - maxDistance &&
+        res.currentLocation.location.longitude <=
+          fakeUserLocation.longitude + maxDistance &&
+        res.currentLocation.location.longitude >=
+          fakeUserLocation.longitude - maxDistance
       );
     });
     console.log(newFilteredResults);
@@ -88,11 +90,13 @@ const DinerDashboard = (props) => {
       <button onClick={toggleCuisineTypeIsVisible}>
         Filter By Cuisine Type
       </button>
-      {nearMeIsVisible && <div>
-        <button onClick={() => handleFilterByNearMe(1)}>
-          Filter By Near Me
-        </button>
-        </div>}
+      {nearMeIsVisible && (
+        <div>
+          <button onClick={() => handleFilterByNearMe(1)}>
+            Filter By Near Me
+          </button>
+        </div>
+      )}
       {ratingAvgAreVisible && (
         <div>
           <button onClick={(event) => handleFilterByAvgRating(1, 2)}>
