@@ -9,15 +9,23 @@ export default yup.object().shape({
     password: yup.string()
   .required('No password provided.') 
   .min( 6,'Password needs to be 6 characters minimum'),
-    //dropbox under
-  trucksOwned: yup
-    .string()
-    .oneOf(["Taco Truck","Pizza Truck","Mediterran Truck","Other"], "Must Choose One Truck type"),
- 
-  
-  currentLocation : yup
-   .string()
-   .required("An addresss needs to be added"),
-  
-  
+
+    terms : yup.boolean(),
 });
+
+
+
+
+    //dropbox under
+  // trucksOwned: yup
+  //   .string()
+  //   .oneOf(["Taco Truck","Pizza Truck","Mediterran Truck","Other"], "Must Choose One Truck type"),
+ //checkbox
+   
+  
+  // currentLocation : yup
+  //  .string()
+  //  .required("An addresss needs to be added"),
+  
+  
+

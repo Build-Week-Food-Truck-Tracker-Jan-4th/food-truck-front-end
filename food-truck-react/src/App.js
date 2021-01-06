@@ -15,6 +15,8 @@ const initialFormValues ={
   currentLocation:'',
   //trucks own dropdown
   trucksOwned: '',
+  //Stay signed in box 
+  terms: false,
 }
 
 const initialFormErrors = {
@@ -27,7 +29,7 @@ const initialFormErrors = {
   const initialDisabled = true;
 
 function App() {
-  const [diner, setDiner] = useState(initialDiner);
+    const [diner, setDiner] = useState(initialDiner);
     const [formValues, setFormValues] = useState(initialFormValues);
     const [formErrors, setFormErrors]=useState(initialFormErrors);
     const [disabled, setDisabled] = useState(initialDisabled);
@@ -41,15 +43,10 @@ function App() {
         setFormErrors({...formErrors,[name]:''})
       })
       .catch((err) => {
-        setFormErrors({
-          ...formErrors,
-          [name]: err.errors[0],
+        setFormErrors({...formErrors,[name]: err.errors[0],
         });
       });
-      setFormValues({
-        ...formValues,
-        [name]: value,
-      })
+      setFormValues({...formValues, [name]: value,})
   }
 
   const formSubmit = () => {
@@ -67,7 +64,9 @@ function App() {
     const newUser = {
     username :formValues.username.trim(),
     password:formValues.password.trim(),
-    currentLocation:formValues.currentLocation.trim(),
+    signIn:["terms"].filter(
+      (signIn) => formValues[signIn]
+      )
     }
     setDiner([...diner,newUser])
     console.log('this is forms in form submit',diner)

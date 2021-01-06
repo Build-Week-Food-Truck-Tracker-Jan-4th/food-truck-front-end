@@ -25,6 +25,7 @@ export default function DinerForm (props){
 
     return (
         <Bform className= 'Form container' onSubmit={onSubmit}>
+            <h1> Please Sign in</h1>
             <div className="errors">
              <div>{errors.username}</div>
              <div>{errors.password}</div>
@@ -37,7 +38,7 @@ export default function DinerForm (props){
                <input
                name='username'
                type= 'text'
-               placeholder= 'type username here'
+               placeholder= 'Username Here'
                maxLength = '20'
                value= {values.username}
                onChange= {onChange}
@@ -49,12 +50,22 @@ export default function DinerForm (props){
                <input
                name='password'
                type= 'password'
-               placeholder= 'password here'
+               placeholder= 'Password here'
                value ={values.password}
                onChange= {onChange}
                />
                </label>
+
                <label>
+               Keep me signed in
+               <input
+               name='terms'
+               type= 'checkbox'
+               checked= {values.terms}
+               onChange= {onChange}
+               />
+               </label>
+               {/* <label>
                Location
                <input
                name='currentLocation'
@@ -63,9 +74,9 @@ export default function DinerForm (props){
                value ={values.currentLocation}
                onChange= {onChange}
                />
-               </label>
+               </label> */}
 
-               <label>
+               {/* <label>
                Trucks Owned
                <select onChange={onChange} value={values.trucksOwned} name="trucksOwned">
                 <option value="">- Select an option -</option>
@@ -74,7 +85,7 @@ export default function DinerForm (props){
                 <option value="Mediterran Truck">Mediterran Food Truck</option>
                 <option value="Other">Other</option>
                </select> 
-               </label>
+               </label> */}
 
                 <div className ='dinerLogIn'>
                <button className ='LogInButton'disabled={disabled}>Log In</button>
