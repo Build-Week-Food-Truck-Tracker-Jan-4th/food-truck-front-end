@@ -7,9 +7,15 @@ const fakeUserLocation = {
 
 const DinerDashboard = (props) => {
   const initialResults = props.trucks;
+  const initialFilters = {
+    nearMe: false,
+    ratingAvg: null,
+    cuisineType: null,
+  };
 
   const [results, setResults] = useState(initialResults);
   const [filteredResults, setFilteredResults] = useState(initialResults);
+  const [currentFilters, setCurrentFilters] = useState(initialFilters);
 
   const [noResults, setNoResults] = useState(false);
   const [nearMeIsVisible, setNearMeIsVisible] = useState(false);
@@ -44,7 +50,8 @@ const DinerDashboard = (props) => {
           fakeUserLocation.longitude - maxDistance
       );
     });
-    console.log(newFilteredResults);
+    //console.log(newFilteredResults);
+    setCurrentFilters({ ...currentFilters, nearMe: true });
     setFilteredResults(newFilteredResults);
   };
 
@@ -55,6 +62,10 @@ const DinerDashboard = (props) => {
         res.customerRatingAvg <= maxNumberOfStars
       );
     });
+    setCurrentFilters({
+      ...currentFilters,
+      ratingAvg: `${minNumberOfStars}-${maxNumberOfStars}`,
+    });
     setFilteredResults(newFilteredResults);
   };
 
@@ -62,11 +73,15 @@ const DinerDashboard = (props) => {
     let newFilteredResults = filteredResults.filter((res) => {
       return res.cuisineType === cuisineType;
     });
+    setCurrentFilters({ ...currentFilters, cuisineType: cuisineType });
     setFilteredResults(newFilteredResults);
   };
 
   const handleApplyFilters = (event) => {
     setResults(filteredResults);
+    setCuisineTypesAreVisible(false);
+    setRatingAvgAreVisible(false);
+    setNearMeIsVisible(false);
     if (filteredResults.length === 0) {
       setNoResults(true);
     } else {
@@ -78,11 +93,22 @@ const DinerDashboard = (props) => {
     setResults(initialResults);
     setFilteredResults(initialResults);
     setNoResults(false);
+    setCurrentFilters(initialFilters);
   };
 
   return (
     <div>
       <h3>All Food Trucks</h3>
+      {(currentFilters.nearMe ||
+        currentFilters.ratingAvg ||
+        currentFilters.cuisineType) && (
+        <div>
+          <h5>Filters</h5>
+        <p>{currentFilters.nearMe ? "near me" : ""}</p>
+        <p>{currentFilters.ratingAvg ? `Avg Rating: ${currentFilters.ratingAvg}` : ""}</p>
+        <p>{currentFilters.cuisineType ? `cuisine type: ${currentFilters.cuisineType}` : ""}</p>
+        </div>
+      )}
       <button onClick={toggleNearMeIsVisible}>Filter By Location</button>
       <button onClick={toggleRatingAvgIsVisible}>
         Filter By Rating Average
@@ -127,6 +153,7 @@ const DinerDashboard = (props) => {
           })}
         </div>
       )}
+      
       {(nearMeIsVisible || ratingAvgAreVisible || cuisineTypesAreVisible) && (
         <div>
           <div>
