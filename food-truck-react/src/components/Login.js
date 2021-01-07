@@ -32,7 +32,7 @@ const Bform = styled.form`
   border-radius: 3px;
 `;
 
-export default function DinerForm(props) {
+export default function Login(props) {
   const [diner, setDiner] = useState(initialDiner);
   const [formValues, setFormValues] = useState(initialFormValues);
   const [formErrors, setFormErrors] = useState(initialFormErrors);

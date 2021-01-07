@@ -5,7 +5,7 @@ import { Route } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 
 import SignUpForm from "./components/SignUpForm";
-import DinerForm from "./components/dinerForm";
+import Login from "./components/Login";
 import OperatorDashboard from "./components/OperatorDashboard";
 import DinerDashboard from "./components/DinerDashboard";
 import LandingPage from "./components/LandingPage";
