@@ -20,7 +20,7 @@ function App() {
     <div className="App">
 
       <Route exact path="/" component={LandingPage} />
-      <Route exact path="/login" component={DinerForm} />
+      <Route exact path="/login" component={Login} />
       <Route exact path="/sign-up" component={SignUpForm} />
       <Route path="/operator-dashboard">
         <OperatorDashboard trucks={dummyData} />
