@@ -14,9 +14,8 @@ import dummyData from "./components/dummyDataBrennan";
 function App() {
   return (
     <div className="App">
-      <DinerForm />
-
       <Route exact path="/" component={LandingPage} />
+      <Route exact path="/diner-login" component={DinerForm} />
       <Route path="/operator-dashboard">
         <OperatorDashboard trucks={dummyData} />
       </Route>

@@ -1,144 +1,137 @@
-import React, {useState, useEffect} from 'react'
-import {Route, Link, Switch} from 'react-router-dom'
-import {useHistory} from 'react-router-dom'
+import React, { useState, useEffect } from "react";
+import { Route, Link, Switch } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
-import schema from '../validations/dinerSchema'
-import styled from "styled-components"
+import schema from "../validations/dinerSchema";
+import styled from "styled-components";
 import * as yup from "yup";
 
-const initialFormValues ={
-  username: '',
+const initialFormValues = {
+  username: "",
   //text
-  password: '',
-  //text input for currentlocation not quite sure what to use for this 
-  currentLocation:'',
+  password: "",
+  //text input for currentlocation not quite sure what to use for this
+  currentLocation: "",
   //trucks own dropdown
-  trucksOwned: '',
-  //Stay signed in box 
+  trucksOwned: "",
+  //Stay signed in box
   terms: false,
-}
+};
 
 const initialFormErrors = {
-  name: '',
-  password: '',
-  currentLocation: '',
-  }
+  name: "",
+  password: "",
+  currentLocation: "",
+};
 
-  const initialDiner = [];
-  const initialDisabled = true;
+const initialDiner = [];
+const initialDisabled = true;
 
-const Bform = styled.form `
-border: 2px solid tan;
-border-radius: 3px;
-`
+const Bform = styled.form`
+  border: 2px solid tan;
+  border-radius: 3px;
+`;
 
+export default function DinerForm(props) {
+  const [diner, setDiner] = useState(initialDiner);
+  const [formValues, setFormValues] = useState(initialFormValues);
+  const [formErrors, setFormErrors] = useState(initialFormErrors);
+  const [disabled, setDisabled] = useState(initialDisabled);
 
-export default function DinerForm (props){
-
-
-    const [diner, setDiner] = useState(initialDiner);
-    const [formValues, setFormValues] = useState(initialFormValues);
-    const [formErrors, setFormErrors]=useState(initialFormErrors);
-    const [disabled, setDisabled] = useState(initialDisabled);
-
-    const inputChange = (name, value) => {
-
-      yup
-      .reach(schema,name)
+  const inputChange = (name, value) => {
+    yup
+      .reach(schema, name)
       .validate(value)
       .then(() => {
-        setFormErrors({...formErrors,[name]:''})
+        setFormErrors({ ...formErrors, [name]: "" });
       })
       .catch((err) => {
-        setFormErrors({...formErrors,[name]: err.errors[0],
-        });
+        setFormErrors({ ...formErrors, [name]: err.errors[0] });
       });
-      setFormValues({...formValues, [name]: value,})
-  }
+    setFormValues({ ...formValues, [name]: value });
+  };
 
   const formSubmit = () => {
-
     axios
-    .post('https://reqres.in/api/users', formValues)
-    .then((res) => {
-      setFormValues(initialFormValues)
-      console.log('this resData in my .post', res.data)
-    })
-    .catch((err) => {
+      .post("https://reqres.in/api/users", formValues)
+      .then((res) => {
+        setFormValues(initialFormValues);
+        console.log("this resData in my .post", res.data);
+        window.location.href = "/diner-dashboard";
+      })
+      .catch((err) => {
         console.log(err);
       });
-    
+
     const newUser = {
-    username :formValues.username.trim(),
-    password:formValues.password.trim(),
-    signIn:["terms"].filter(
-      (signIn) => formValues[signIn]
-      )
-    }
-    setDiner([...diner,newUser])
-    console.log('this is forms in form submit',diner)
-    }
-
-    useEffect(() => {
-      schema.isValid(formValues).then((valid) => {
-        setDisabled(!valid)
-      })
-    }, [formValues])
-
-    const onChange = (evt) => {
-        const {name, value, type, checked} = evt.target;
-        const valueToUse = type === 'checkbox' ? checked : value;
-        inputChange(name, valueToUse);
+      username: formValues.username.trim(),
+      password: formValues.password.trim(),
+      signIn: ["terms"].filter((signIn) => formValues[signIn]),
     };
+    setDiner([...diner, newUser]);
+    console.log("this is forms in form submit", diner);
+  };
 
-    const onSubmit = (evt) => {
-        evt.preventDefault();
-        formSubmit();
-    };
+  useEffect(() => {
+    schema.isValid(formValues).then((valid) => {
+      setDisabled(!valid);
+    });
+  }, [formValues]);
 
-    return (
-        <Bform className= 'Form container' onSubmit={onSubmit}>
-            <h1> Please Sign in</h1>
-            <div className="errors">
-             <div>{formErrors.username}</div>
-             <div>{formErrors.password}</div>
-             <div>{formErrors.currentLocation}</div>
-             <div>{formErrors.trucksOwned}</div>
-            </div>
-           <div className = 'form-groups'>
-               <label>
-               Username
-               <input
-               name='username'
-               type= 'text'
-               placeholder= 'Username Here'
-               maxLength = '20'
-               value= {formValues.username}
-               onChange= {onChange}
-               />
-               </label>
+  const onChange = (evt) => {
+    const { name, value, type, checked } = evt.target;
+    const valueToUse = type === "checkbox" ? checked : value;
+    inputChange(name, valueToUse);
+  };
 
-               <label>
-               Password
-               <input
-               name='password'
-               type= 'password'
-               placeholder= 'Password here'
-               value ={formValues.password}
-               onChange= {onChange}
-               />
-               </label>
+  const onSubmit = (evt) => {
+    evt.preventDefault();
+    formSubmit();
+  };
 
-               <label>
-               Keep me signed in
-               <input
-               name='terms'
-               type= 'checkbox'
-               checked= {formValues.terms}
-               onChange= {onChange}
-               />
-               </label>
-               {/* <label>
+  return (
+    <Bform className="Form container" onSubmit={onSubmit}>
+      <h1> Please Sign in</h1>
+      <div className="errors">
+        <div>{formErrors.username}</div>
+        <div>{formErrors.password}</div>
+        <div>{formErrors.currentLocation}</div>
+        <div>{formErrors.trucksOwned}</div>
+      </div>
+      <div className="form-groups">
+        <label>
+          Username
+          <input
+            name="username"
+            type="text"
+            placeholder="Username Here"
+            maxLength="20"
+            value={formValues.username}
+            onChange={onChange}
+          />
+        </label>
+
+        <label>
+          Password
+          <input
+            name="password"
+            type="password"
+            placeholder="Password here"
+            value={formValues.password}
+            onChange={onChange}
+          />
+        </label>
+
+        <label>
+          Keep me signed in
+          <input
+            name="terms"
+            type="checkbox"
+            checked={formValues.terms}
+            onChange={onChange}
+          />
+        </label>
+        {/* <label>
                Location
                <input
                name='currentLocation'
@@ -149,7 +142,7 @@ export default function DinerForm (props){
                />
                </label> */}
 
-               {/* <label>
+        {/* <label>
                Trucks Owned
                <select onChange={onChange} value={values.trucksOwned} name="trucksOwned">
                 <option value="">- Select an option -</option>
@@ -160,10 +153,12 @@ export default function DinerForm (props){
                </select> 
                </label> */}
 
-                <div className ='dinerLogIn'>
-               <button className ='LogInButton'disabled={disabled}>Log In</button>
-               </div>
-           </div>
-       </Bform>
-    )
+        <div className="dinerLogIn">
+          <button className="LogInButton" disabled={disabled}>
+            Log In
+          </button>
+        </div>
+      </div>
+    </Bform>
+  );
 }
