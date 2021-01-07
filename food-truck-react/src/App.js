@@ -2,6 +2,8 @@ import React from "react";
 import "./App.css";
 import { Route } from "react-router-dom";
 
+import PrivateRoute from "./components/PrivateRoute";
+
 import DinerForm from "./components/dinerForm";
 import OperatorDashboard from "./components/OperatorDashboard";
 import DinerDashboard from "./components/DinerDashboard";
