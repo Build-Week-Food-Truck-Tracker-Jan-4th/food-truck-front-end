@@ -90,48 +90,49 @@ export default function DinerForm(props) {
   };
 
   return (
-    <Bform className="Form container" onSubmit={onSubmit}>
-      <h1> Please Sign in</h1>
-      <div className="errors">
-        <div>{formErrors.username}</div>
-        <div>{formErrors.password}</div>
-        <div>{formErrors.currentLocation}</div>
-        <div>{formErrors.trucksOwned}</div>
-      </div>
-      <div className="form-groups">
-        <label>
-          Username
-          <input
-            name="username"
-            type="text"
-            placeholder="Username Here"
-            maxLength="20"
-            value={formValues.username}
-            onChange={onChange}
-          />
-        </label>
+    <div>
+      <Bform className="Form container" onSubmit={onSubmit}>
+        <h1> Please Sign in</h1>
+        <div className="errors">
+          <div>{formErrors.username}</div>
+          <div>{formErrors.password}</div>
+          <div>{formErrors.currentLocation}</div>
+          <div>{formErrors.trucksOwned}</div>
+        </div>
+        <div className="form-groups">
+          <label>
+            Username
+            <input
+              name="username"
+              type="text"
+              placeholder="Username Here"
+              maxLength="20"
+              value={formValues.username}
+              onChange={onChange}
+            />
+          </label>
 
-        <label>
-          Password
-          <input
-            name="password"
-            type="password"
-            placeholder="Password here"
-            value={formValues.password}
-            onChange={onChange}
-          />
-        </label>
+          <label>
+            Password
+            <input
+              name="password"
+              type="password"
+              placeholder="Password here"
+              value={formValues.password}
+              onChange={onChange}
+            />
+          </label>
 
-        <label>
-          Keep me signed in
-          <input
-            name="terms"
-            type="checkbox"
-            checked={formValues.terms}
-            onChange={onChange}
-          />
-        </label>
-        {/* <label>
+          <label>
+            Keep me signed in
+            <input
+              name="terms"
+              type="checkbox"
+              checked={formValues.terms}
+              onChange={onChange}
+            />
+          </label>
+          {/* <label>
                Location
                <input
                name='currentLocation'
@@ -142,7 +143,7 @@ export default function DinerForm(props) {
                />
                </label> */}
 
-        {/* <label>
+          {/* <label>
                Trucks Owned
                <select onChange={onChange} value={values.trucksOwned} name="trucksOwned">
                 <option value="">- Select an option -</option>
@@ -153,12 +154,14 @@ export default function DinerForm(props) {
                </select> 
                </label> */}
 
-        <div className="dinerLogIn">
-          <button className="LogInButton" disabled={disabled}>
-            Log In
-          </button>
+          <div className="dinerLogIn">
+            <button className="LogInButton" disabled={disabled}>
+              Log In
+            </button>
+          </div>
         </div>
-      </div>
-    </Bform>
+      </Bform>
+      <p>Don't have an account? <Link to="/sign-up">Sign up here</Link></p>
+    </div>
   );
 }

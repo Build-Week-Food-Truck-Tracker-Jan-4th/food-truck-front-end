@@ -4,6 +4,7 @@ import { Route } from "react-router-dom";
 
 import PrivateRoute from "./components/PrivateRoute";
 
+import SignUpForm from "./components/SignUpForm";
 import DinerForm from "./components/dinerForm";
 import OperatorDashboard from "./components/OperatorDashboard";
 import DinerDashboard from "./components/DinerDashboard";
@@ -13,11 +14,14 @@ import EditFoodTruck from "./components/EditFoodTruck";
 import AddFoodTruck from "./components/AddFoodTruck";
 import dummyData from "./components/dummyDataBrennan";
 
+
 function App() {
   return (
     <div className="App">
+
       <Route exact path="/" component={LandingPage} />
-      <Route exact path="/diner-login" component={DinerForm} />
+      <Route exact path="/login" component={DinerForm} />
+      <Route exact path="/sign-up" component={SignUpForm} />
       <Route path="/operator-dashboard">
         <OperatorDashboard trucks={dummyData} />
       </Route>
