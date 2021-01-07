@@ -1,11 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { axiosWithAuth } from "../auth/axiosWithAuth";
 
 export default class SignUpForm extends React.Component {
   state = {
     role: null,
     userName: "",
     password: "",
+    email: "",
     location: {
       latitude: "",
       longitude: "",
@@ -34,27 +36,31 @@ export default class SignUpForm extends React.Component {
     event.preventDefault();
     if (this.state.role === "diner") {
       const dinerState = {
-        role: this.state.role,
-        userName: this.state.userName,
+        username: this.state.userName,
+        email: this.state.email,
         password: this.state.password,
-        location: {
-          latitude: this.state.location.latitude,
-          longitude: this.state.location.longitude,
-          distortion: this.state.location.distortion,
-        },
+        location: "Cave Town, USA",
       };
-      //Post request
-      console.log(dinerState);
-      //window.location.href = "/login";
+
+      axiosWithAuth()
+        .post("auth/register/diners", dinerState)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      window.location.href = "/login";
     } else if (this.state.role === "operator") {
       const operatorState = {
-        role: this.state.role,
         userName: this.state.userName,
+        email: this.state.email,
         password: this.state.password,
       };
-      console.log(operatorState);
+      //console.log(operatorState);
       //Post request
-      //window.location.href = "/login";
+      window.location.href = "/login";
     } else {
       this.setState({ isMissingRole: true });
     }
@@ -102,6 +108,15 @@ export default class SignUpForm extends React.Component {
             />
           </label>
           <label>
+            Email
+            <input
+              type="text"
+              value={this.state.email}
+              name="email"
+              onChange={this.handleChange}
+            />
+          </label>
+          <label>
             Password
             <input
               type="password"
@@ -144,7 +159,9 @@ export default class SignUpForm extends React.Component {
           )}
           <button>Sign Up</button>
         </form>
-        <p>Already have an account? <Link to="/login">Log in here</Link></p>
+        <p>
+          Already have an account? <Link to="/login">Log in here</Link>
+        </p>
       </div>
     );
   }
