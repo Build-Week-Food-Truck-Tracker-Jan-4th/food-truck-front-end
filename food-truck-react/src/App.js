@@ -1,8 +1,8 @@
 import React from "react";
 import "./App.css";
-import DinerForm from "./components/dinerForm";
 import { Route } from "react-router-dom";
 
+import DinerForm from "./components/dinerForm";
 import OperatorDashboard from "./components/OperatorDashboard";
 import DinerDashboard from "./components/DinerDashboard";
 import LandingPage from "./components/LandingPage";
